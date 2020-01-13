@@ -1,23 +1,26 @@
 import React from 'react';
 import useFetch from 'use-http';
 import useReactRouter from 'use-react-router';
+import { useForm } from 'react-hook-form';
+
+import Form from 'components/Form';
+import { SubmitButton } from 'components/Button';
 
 const StartGame: React.FC = () => {
   const [request] = useFetch('http://localhost:8000');
   const { history } = useReactRouter();
+  const { handleSubmit } = useForm();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const onSubmit = () => {
     request
       .post('/tables')
       .then(response => history.push(`/tables/${response.id}`));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="submit" value="ゲーム開始" />
-    </form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <SubmitButton value="ゲーム開始" />
+    </Form>
   );
 }
 
