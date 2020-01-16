@@ -1,57 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useReducer,
+} from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, FieldValues } from 'react-hook-form';
-import useFetch from 'use-http';
 
 import Text from 'components/Text';
-import { SubmitButton } from 'components/Button';
-import List, { Item } from 'components/List';
-import Form, { TextInput } from 'components/Form';
-import { ITable } from './components/Table';
 
-const Table: React.FC = (): JSX.Element => {
-  const [request] = useFetch('http://localhost:8000');
+import Store from './store';
+import reducer from './reducer';
 
-  const { register, handleSubmit, reset } = useForm();
+import Players from './components/Players';
+import PlayerEntry from './components/PlayerEntry';
+
+const Table: React.FC = () => {
   const { tableId } = useParams();
-  const [table, setTable] = useState<ITable | null>(null);
+  const [state, dispatch] = useReducer(
+    reducer,
+    { tableId: tableId || '', players: [] }
+  );
 
-  useEffect(() => {
-    const fetchTable = async () => {
-      await request.get(`/tables/${tableId}`).then(setTable);
-    }
-
-    fetchTable();
-
-    const id: NodeJS.Timeout = setInterval(fetchTable, 3000);
-
-    return () => clearInterval(id);
-  }, [tableId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onSubmit = ({ name }: FieldValues) => {
-    request
-      .post(`/tables/${tableId}/players`, { name })
-      .then(reset);
-  };
+  if (!tableId) return <div>404</div>;
 
   return (
-    <>
+    <Store.Provider value={{ state, dispatch }}>
       <Text>識別子：{tableId}</Text>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <TextInput name="name" register={register} required />
+      {!state.accessToken && <PlayerEntry tableId={tableId} />}
 
-        <SubmitButton value="参加する" />
-      </Form>
-
-      {table && (
-        <List>
-          {table.players.map(player => (
-            <Item key={player.id}>{player.name}</Item>
-          ))}
-        </List>
-      )}
-    </>
+      <Players tableId={tableId} />
+    </Store.Provider>
   );
 };
 
