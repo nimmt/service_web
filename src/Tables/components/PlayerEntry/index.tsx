@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm, FieldValues } from 'react-hook-form';
 import useFetch from 'use-http';
@@ -6,17 +7,15 @@ import useFetch from 'use-http';
 import { SubmitButton } from 'components/Button';
 import Form, { TextInput } from 'components/Form';
 
-import Store from '../../store';
-
 interface IProps {
   tableId: string;
 };
 
 const PlayerEntry: React.FC<IProps> = ({ tableId }) => {
   const [request] = useFetch('http://localhost:8000');
+  const dispatch = useDispatch();
 
   const { register, handleSubmit, reset } = useForm();
-  const { dispatch } = useContext(Store);
 
   const onSubmit = ({ name }: FieldValues) => {
     request

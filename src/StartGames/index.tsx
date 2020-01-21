@@ -1,6 +1,6 @@
 import React from 'react';
 import useFetch from 'use-http';
-import useReactRouter from 'use-react-router';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import Form from 'components/Form';
@@ -8,7 +8,7 @@ import { SubmitButton } from 'components/Button';
 
 const StartGame: React.FC = () => {
   const [request] = useFetch('http://localhost:8000');
-  const { history } = useReactRouter();
+  const history = useHistory();
   const { handleSubmit } = useForm();
 
   const onSubmit = () => {

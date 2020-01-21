@@ -1,12 +1,10 @@
-import React, {
-  useContext,
-  useEffect,
-} from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import useFetch from 'use-http';
 
 import List, { Item } from 'components/List';
 
-import Store from '../../store';
+import { RootState } from 'store';
 
 interface IProps {
   tableId: string;
@@ -14,8 +12,11 @@ interface IProps {
 
 const Players: React.FC<IProps> = ({ tableId }) => {
   const [request] = useFetch('http://localhost:8000');
+  const dispatch = useDispatch();
 
-  const { state: { players }, dispatch } = useContext(Store);
+  const players = useSelector(
+    (state: RootState) => state.table.players
+  );
 
   const fetchTable = () => {
     request

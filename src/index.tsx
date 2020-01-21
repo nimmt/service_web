@@ -5,22 +5,27 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
 import StartGame from './StartGames';
 import Table from './Tables';
 
+import store from 'store';
+
 ReactDOM.render(
-  <Router>
-    <Switch>
-      <Route path="/" exact>
-        <StartGame />
-      </Route>
-      <Route path="/tables/:tableId" exact>
-        <Table />
-      </Route>
-    </Switch>
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <StartGame />
+        </Route>
+        <Route path="/tables/:tableId" exact>
+          <Table />
+        </Route>
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 
