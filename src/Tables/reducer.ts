@@ -1,17 +1,22 @@
-import { IPlayer } from './components/Player';
+import { Action } from 'redux';
+
+import { IPlayer } from 'Tables/components/Player';
 
 export type State = {
-  tableId: string;
+  tableId?: string;
   players: IPlayer[];
   accessToken?: string;
 };
 
-export type Action = {
-  type: string;
+export interface TableAction extends Action {
   payload: any;
 };
 
-const reducer = (state: State, action: Action): State => {
+const initialState = {
+  players: []
+}
+
+const reducer = (state: State = initialState, action: TableAction): State => {
   switch (action.type) {
     case 'FETCH_PLAYERS': {
       return {
