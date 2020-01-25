@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import { ConnectedRouter } from 'connected-react-router';
 
 import StartGame from './StartGames';
 import Table from './Tables';
 
-import store from 'store';
+import store, { history } from 'store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <Switch>
         <Route path="/" exact>
           <StartGame />
@@ -24,7 +24,7 @@ ReactDOM.render(
           <Table />
         </Route>
       </Switch>
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
 );

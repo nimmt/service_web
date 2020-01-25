@@ -1,20 +1,16 @@
 import React from 'react';
-import useFetch from 'use-http';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 import Form from 'components/Form';
 import { SubmitButton } from 'components/Button';
 
 const StartGame: React.FC = () => {
-  const [request] = useFetch('http://localhost:8000');
-  const history = useHistory();
   const { handleSubmit } = useForm();
+  const dispatch = useDispatch();
 
   const onSubmit = () => {
-    request
-      .post('/tables')
-      .then(response => history.push(`/tables/${response.id}`));
+    dispatch({ type: 'CREATE_TABLE_REQUESTED' });
   };
 
   return (

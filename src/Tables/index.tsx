@@ -14,7 +14,7 @@ const Table: React.FC = () => {
 
   const accessToken = useSelector(
     (state: RootState) => state.table.accessToken
-  )
+  );
 
   if (!tableId) return <div>404</div>;
 

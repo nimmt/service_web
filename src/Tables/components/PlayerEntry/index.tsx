@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useForm, FieldValues } from 'react-hook-form';
-import useFetch from 'use-http';
 
 import { SubmitButton } from 'components/Button';
 import Form, { TextInput } from 'components/Form';
@@ -12,19 +11,12 @@ interface IProps {
 };
 
 const PlayerEntry: React.FC<IProps> = ({ tableId }) => {
-  const [request] = useFetch('http://localhost:8000');
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = ({ name }: FieldValues) => {
-    request
-      .post(`/tables/${tableId}/players`, { name })
-      .then(response => {
-        reset();
-
-        return dispatch({ type: 'ADD_PLAYER', payload: response });
-      });
+    dispatch({ type: 'JOIN_TABLE_REQUESTED', payload: { tableId, name } });
   };
 
   return (
