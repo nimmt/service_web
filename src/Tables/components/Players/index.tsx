@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import useFetch from 'use-http';
 
 import List, { Item } from 'components/List';
 
@@ -11,7 +10,6 @@ interface IProps {
 }
 
 const Players: React.FC<IProps> = ({ tableId }) => {
-  const [request] = useFetch('http://localhost:8000');
   const dispatch = useDispatch();
 
   const players = useSelector(
@@ -19,9 +17,7 @@ const Players: React.FC<IProps> = ({ tableId }) => {
   );
 
   const fetchTable = () => {
-    request
-      .get(`/tables/${tableId}`)
-      .then(response => dispatch({ type: 'FETCH_PLAYERS', payload: response }));
+    dispatch({ type: 'TABLE_FETCH_REQUESTED', payload: { tableId } });
   };
 
   useEffect(() => {

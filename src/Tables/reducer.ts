@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import { IPlayer } from 'Tables/components/Player';
 
 export type State = {
-  tableId?: string;
+  id?: string;
   players: IPlayer[];
   accessToken?: string;
 };
@@ -18,16 +18,22 @@ const initialState = {
 
 const reducer = (state: State = initialState, action: TableAction): State => {
   switch (action.type) {
-    case 'FETCH_PLAYERS': {
+    case 'CREATE_TABLE_SUCCEEDED': {
+      return {
+        ...state,
+        id: action.payload
+      };
+    }
+    case 'TABLE_FETCH_SUCCEEDED': {
       return {
         ...state,
         players: action.payload.players
       };
     }
-    case 'ADD_PLAYER': {
+    case 'JOIN_PLAYER_SUCCEEDED': {
       return {
         ...state,
-        accessToken: action.payload.accessToken
+        accessToken: action.payload
       };
     }
     default: {
